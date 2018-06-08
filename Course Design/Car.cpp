@@ -3,10 +3,7 @@
 
 Car::Car()
 {
-	total_distance = 0.0;
-	Fuel_consumption = 0.0;
-	Base_maintain_fee = car_fee;
-	Road_maintenance_fee = 0.0;
+	
 }
 Car::Car(string &ID_m, string &company_m, string &data_m, string &model_m, string &type_m
 	, double td, double fuel, double road) :vehicle(ID_m, company_m, data_m, model_m, type_m)

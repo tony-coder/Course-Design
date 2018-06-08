@@ -8,17 +8,23 @@ void menu()
 	cout << endl;
 	cout << "                       1.车辆信息管理系统" << endl;
 	cout << endl;
-	cout << "                       2.退出" << endl;
+	cout << "                       0.退出" << endl;
 	cout << endl;
 	cout << "                       请输入您的操作:";
 	int num;
-	cin >> num;
+	for (cin >> num; num != 1 && num != 0; cin >> num)
+	{
+		cout << "对不起，您只能输入1或0，请重新输入!" << endl;
+		cin.clear();
+		while (cin.get() != '\n')  //去除错误输入
+			continue;
+	}
 	switch (num)
 	{
 	case 1:
 		login();
 	break;
-	case 2:
+	case 0:
 		exit(0);
 	default:
 		break;
@@ -26,11 +32,10 @@ void menu()
 }
 void login()  //测试中！！！！
 {
-	int num;
+	int num, judge;
 	int outside_loop = 1;  //外循环
 	int inner_loop;  //内循环
 	string id;
-	int judge;
 	management c;
 	while (outside_loop)
 	{
@@ -45,12 +50,20 @@ void login()  //测试中！！！！
 		cout << "\n";
 		cout << "           7:将数据写入磁盘                            8:从磁盘读取数据" << endl;
 		cout << '\n';
-		cout << "           9:清空内存                                  10:返回上一级" << endl;
+		cout << "           9:清空内存                                  0:返回上一级" << endl;
 		inner_loop = 1;
 		while (inner_loop)
 		{
-			cout << "                              请选择操作(1-10):";
-			cin >> num;
+			cout << "                              请选择操作(0-9):";
+			num = -1;  //重置num
+			for (cin >> num; num < 0 || num>9; cin >> num)
+			{
+				cout << "对不起，您只能从0-9中选择输入，请重新输入!" << endl;
+				cin.clear();
+				while (cin.get() != '\n')  //去除错误输入
+					continue;
+			}
+
 			system("cls");
 			switch (num)
 			{
@@ -60,15 +73,7 @@ void login()  //测试中！！！！
 				{
 					c.add();
 					cout << "希望继续输入? 1:继续 0:返回上一级\n";
-					cin >> judge;
-					while (judge != 0 && judge != 1)
-					{
-						cout << "对不起，您只能输入0或1，请重新输入!" << endl;
-						cin.clear();
-						while (cin.get() != '\n')  //去除错误输入
-							continue;
-						cin >> judge;
-					}
+					judge = enter_correct();  //判断输入是否正确
 					if (judge == 0)
 						break;
 				}
@@ -84,30 +89,14 @@ void login()  //测试中！！！！
 					if (c.modify(id))
 					{
 						cout << "希望继续修改? 1:继续 0:返回上一级\n";
-						cin >> judge;
-						while (judge != 0 && judge != 1)
-						{
-							cout << "对不起，您只能输入0或1，请重新输入!" << endl;
-							cin.clear();
-							while (cin.get() != '\n')  //去除错误输入
-								continue;
-							cin >> judge;
-						}
+						judge = enter_correct();
 						if (judge == 0)
 							break;
 					}
 					else
 					{
 						cout << "是否要重新输入?1:是的 0:返回上一级\n";
-						cin >> judge;
-						while (judge != 0 && judge != 1)
-						{
-							cout << "对不起，您只能输入0或1，请重新输入!" << endl;
-							cin.clear();
-							while (cin.get() != '\n')  //去除错误输入
-								continue;
-							cin >> judge;
-						}
+						judge = enter_correct();
 						if (judge == 0)
 							break;
 					}
@@ -124,30 +113,14 @@ void login()  //测试中！！！！
 					if (c.modify_distance(id))
 					{
 						cout << "希望继续修改? 1:继续 0:返回上一级\n";
-						cin >> judge;
-						while (judge != 0 && judge != 1)
-						{
-							cout << "对不起，您只能输入0或1，请重新输入!" << endl;
-							cin.clear();
-							while (cin.get() != '\n')  //去除错误输入
-								continue;
-							cin >> judge;
-						}
+						judge = enter_correct();
 						if (judge == 0)
 							break;
 					}
 					else
 					{
 						cout << "是否要重新输入?1:是的 0:返回上一级\n";
-						cin >> judge;
-						while (judge != 0 && judge != 1)
-						{
-							cout << "对不起，您只能输入0或1，请重新输入!" << endl;
-							cin.clear();
-							while (cin.get() != '\n')  //去除错误输入
-								continue;
-							cin >> judge;
-						}
+						judge = enter_correct();
 						if (judge == 0)
 							break;
 					}
@@ -164,30 +137,14 @@ void login()  //测试中！！！！
 					if (c.remove(id))
 					{
 						cout << "希望继续删除? 1:继续 0:返回上一级\n";
-						cin >> judge;
-						while (judge != 0 && judge != 1)
-						{
-							cout << "对不起，您只能输入0或1，请重新输入!" << endl;
-							cin.clear();
-							while (cin.get() != '\n')  //去除错误输入
-								continue;
-							cin >> judge;
-						}
+						judge = enter_correct();
 						if (judge == 0)
 							break;
 					}
 					else
 					{
 						cout << "是否要重新输入?1:是的 0:返回上一级\n";
-						cin >> judge;
-						while (judge != 0 && judge != 1)
-						{
-							cout << "对不起，您只能输入0或1，请重新输入!" << endl;
-							cin.clear();
-							while (cin.get() != '\n')  //去除错误输入
-								continue;
-							cin >> judge;
-						}
+						judge = enter_correct();
 						if (judge == 0)
 							break;
 					}
@@ -206,30 +163,14 @@ void login()  //测试中！！！！
 					{
 						temp->display();
 						cout << "希望继续查找? 1:继续 0:返回上一级\n";
-						cin >> judge;
-						while (judge != 0 && judge != 1)
-						{
-							cout << "对不起，您只能输入0或1，请重新输入!" << endl;
-							cin.clear();
-							while (cin.get() != '\n')  //去除错误输入
-								continue;
-							cin >> judge;
-						}
+						judge = enter_correct();
 						if (judge == 0)
 							break;
 					}
 					else
 					{
 						cout << "是否要重新输入?1:是的 0:返回上一级\n";
-						cin >> judge;
-						while (judge != 0 && judge != 1)
-						{
-							cout << "对不起，您只能输入0或1，请重新输入!" << endl;
-							cin.clear();
-							while (cin.get() != '\n')  //去除错误输入
-								continue;
-							cin >> judge;
-						}
+						judge = enter_correct();
 						if (judge == 0)
 							break;
 					}
@@ -249,7 +190,7 @@ void login()  //测试中！！！！
 				cout << "***********将数据写入磁盘************\n";
 				if (c.write())
 				{
-					cout << "储存成功!数据已储存在D://management.txt\n";
+					cout << "储存成功!数据已储存在Data.txt\n";
 					cout<< "按任意键返回上一级";
 					cin.get();
 					cin.get();
@@ -268,7 +209,8 @@ void login()  //测试中！！！！
 			case 8:
 				cout << "***********从磁盘读取数据************\n";
 				c.read();
-				cout << "读取成功!";
+				cout << "读取成功!" << endl;
+				c.display();
 				cout << "按任意键返回上一级";
 				cin.get();
 				cin.get();
@@ -282,13 +224,26 @@ void login()  //测试中！！！！
 				cin.get();
 				inner_loop = 0;
 				break;
-			case 10:
+			case 0:
 				inner_loop = 0;
 				outside_loop = 0;
+				c.clear();  //清空内存
 				break;
 			default:
 				break;
 			}
 		}
 	}
+}
+
+int enter_correct(void) {
+	int judge;
+	for (cin >> judge; judge != 0 && judge != 1; cin >> judge)
+	{
+		cout << "对不起，您只能输入0或1，请重新输入!" << endl;
+		cin.clear();
+		while (cin.get() != '\n')  //去除错误输入
+			continue;
+	}
+	return judge;
 }

@@ -28,10 +28,8 @@ public:
 	string get_data(void) { return data; }
 	string get_model(void) { return model; }
 	string get_type(void) { return type; }
-	double get_tcost() { return total_cost; }
+	double get_tcost(void) { return total_cost; }
 	virtual void set_tdistance(double) = 0;  //´¿Ðéº¯Êý
 	virtual void set_tcost(void) = 0;
 	void display(void);
-
 };
-

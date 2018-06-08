@@ -7,10 +7,6 @@
 #include<string>
 #include<fstream>
 using namespace std;
-management::management()
-{
-}
-
 
 management::~management()
 {
@@ -29,18 +25,17 @@ bool management::add(void) {
 	double Road_maintenance_fee;  //养路费
 	
 	cin.get();  //去除换行符
-
 	cout << "请输入车辆编号: ";
 	getline(cin, ID);
 	cout << "请输入车辆制造公司: ";
 	getline(cin, Company);
-	cout << "请输入购买时间: ";
+	cout << "请输入购买时间(日期格式为XXXX.XX.XX): ";
 	getline(cin, data);
 	cout << "请输入型号: ";
 	getline(cin, model);
 	cout << "请输入车辆种类(1: 客车  2: 小轿车  3: 卡车): ";
 	cin >> type_t;
-	/**************错误处理****************/
+	/*错误处理*/
 	while (type_t != 1 && type_t != 2 && type_t != 3)
 	{
 		cout << "输入有误！你只能从（1: 客车  2: 小轿车  3: 卡车）中选择数字输入 " << "请重试！" << endl;
@@ -49,14 +44,12 @@ bool management::add(void) {
 			continue;
 		cin >> type_t;
 	}
-	
 	cout << "请输入总公里数: ";
 	cin >> total_distance;
 	cout << "请输入耗油量: ";
 	cin >> Fuel_consumption;
 	cout << "请输入养路费: ";
 	cin >> Road_maintenance_fee;
-
 	cin.get();   //去除换行符
 	
 	switch (type_t)
@@ -80,7 +73,7 @@ bool management::add(void) {
 		current = new Car(ID, Company, data, model, type, total_distance, Fuel_consumption, Road_maintenance_fee);
 		if (head == NULL)
 		{
-			head = new Bus();
+			head = new Car();
 			head->next = current;
 		}
 		else
@@ -94,7 +87,7 @@ bool management::add(void) {
 		current = new truck(ID, Company, data, model, type, total_distance, Fuel_consumption, Road_maintenance_fee);
 		if (head == NULL)
 		{
-			head = new Bus();
+			head = new truck();
 			head->next = current;
 		}
 		else
@@ -119,10 +112,6 @@ void management::display() {
 }
 
 vehicle* management::find(string & f) {
-	/*vehicle *pd = head;
-	while (pd != NULL && pd->get_ID() != f)
-		pd = pd->next;
-	return pd;*/
 	if (head)  //判断表头是否为空
 	{
 		for (vehicle *pd = head->next; pd; pd = pd->next)
@@ -136,36 +125,26 @@ vehicle* management::find(string & f) {
 }
 
 vehicle * management::findPrevious(string & f) {
-	if (head)
+	if (!head)
+		return NULL;
+	for (vehicle *pd = head; pd->next; pd = pd->next)
 	{
-		for (vehicle *pd = head; pd->next; pd = pd->next)
-		{
-			if (pd->next->get_ID() == f)
-				return pd;
-		}
+		if (pd->next->get_ID() == f)
+			return pd;
 	}
 	return NULL;
 }
 
 bool management::remove(string &r) {
-	vehicle * p;
-	vehicle * d;
+	vehicle * p, *d;
 	if (p=findPrevious(r))
 	{
 		d = p->next;
-		if (!IsLast(p->next))  //是否在末尾
-		{
-			vehicle *temp = p->next;
-			p->next = temp->next;
-			delete d;  //清空内存
-		}
-		else
-		{
-			vehicle *temp = p->next;
-			p->next = temp->next;
+		if (IsLast(p->next))  //是否在末尾
 			prev = p;
-			delete d;  //清空内存
-		}
+		vehicle *temp = p->next;
+		p->next = temp->next;
+		delete d;  //清空内存
 		cout << "删除成功!";
 		return true;
 	}
@@ -174,7 +153,7 @@ bool management::remove(string &r) {
 	return false;
 }
 void management::clear() {
-	if (head != NULL)
+	if (head)
 	{
 		vehicle * p = head->next;
 		vehicle * temp;
@@ -190,18 +169,11 @@ void management::clear() {
 }
 
 bool management::modify(string & s) {
-	vehicle * current;
-	string ID;
-	string Company;
-	string data;
-	string model;
-	string type;
+	vehicle * current, *node, *temp;
+	string ID, Company, data, model, type;
 	int type_t;
-	double total_distance;
-	double Fuel_consumption;
-	double Road_maintenance_fee;
+	double total_distance, Fuel_consumption, Road_maintenance_fee;
 
-	vehicle *node;
 	if (node=findPrevious(s))  //找到该节点
 	{
 		cout << "请输入新的车辆编号: ";
@@ -214,12 +186,12 @@ bool management::modify(string & s) {
 		getline(cin, model);
 		cout << "请输入新的车辆种类(1: 客车  2: 小轿车  3: 卡车): ";
 		cin >> type_t;
-		/**************错误处理****************/
+		/*错误处理*/
 		while (type_t != 1 && type_t != 2 && type_t != 3)
 		{
 			cout << "输入有误！你只能从（1: 客车  2: 小轿车  3: 卡车）中选择数字输入 " << "请重试！" << endl;
 			cin.clear();
-			while (cin.get() != '\n')  //去除错误输入
+			while (cin.get() != '\n')
 				continue;
 			cin >> type_t;
 		}
@@ -235,23 +207,29 @@ bool management::modify(string & s) {
 		case 1:
 			type = "客车";
 			current = new Bus(ID, Company, data, model, type, total_distance, Fuel_consumption, Road_maintenance_fee);
+			temp = node->next;
 			current->next = node->next->next;
 			node->next = current;
 			cout << "修改成功！" << endl;
+			delete temp;  //清除被修改对象之前的地址
 			return true;
 		case 2:
 			type = "小轿车";
 			current = new Car(ID, Company, data, model, type, total_distance, Fuel_consumption, Road_maintenance_fee);
+			temp = node->next;
 			current->next = node->next->next;
 			node->next = current;
 			cout << "修改成功！" << endl;
+			delete temp;
 			return true;
 		case 3:
 			type = "卡车";
 			current = new truck(ID, Company, data, model, type, total_distance, Fuel_consumption, Road_maintenance_fee);
+			temp = node->next;
 			current->next = node->next->next;
 			node->next = current;
 			cout << "修改成功！" << endl;
+			delete temp;
 			return true;
 		default:
 			break;
@@ -306,6 +284,7 @@ void management::swap(vehicle * a, vehicle *b) {  //交换节点
 	}
 }
 
+//原理与选择排序法类似
 void management::sort() {
 	int count = 0;
 	if (head)  //表头不为空
@@ -352,7 +331,7 @@ void management::statistics() {
 		{
 			cout << "输入有误！你只能从（1: 客车  2: 小轿车  3: 卡车）中选择数字输入 " << "请重试！" << endl;
 			cin.clear();
-			while (cin.get() != '\n')  //去除错误输入
+			while (cin.get() != '\n')
 				continue;
 			cin >> num;
 		}
@@ -431,11 +410,7 @@ bool management::write(const string & address) {
 bool management::read(const string & address) {
 	ifstream inFile;
 	inFile.open(address);
-	string ID;
-	string Company;
-	string data;
-	string model;
-	string type;
+	string ID, Company, data, model, type;
 	double total_cost;
 	clear();  //清空内存
 	inFile >> ID >> Company >> data >> model >> type >> total_cost;
@@ -460,7 +435,7 @@ bool management::read(const string & address) {
 			current = new Car(ID, Company, data, model, type, total_cost);
 			if (head == NULL)
 			{
-				head = new Car();    //head:表头，位置为0，空表
+				head = new Car();
 				head->next = current;
 			}
 			else
@@ -473,7 +448,7 @@ bool management::read(const string & address) {
 			current = new truck(ID, Company, data, model, type, total_cost);
 			if (head == NULL)
 			{
-				head = new truck();    //head:表头，位置为0，空表
+				head = new truck();
 				head->next = current;
 			}
 			else

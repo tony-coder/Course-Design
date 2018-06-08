@@ -4,11 +4,7 @@
 
 vehicle::vehicle()
 {
-	ID = "NULL";
-	Company = "NULL";
-	data = "NULL";
-	model = "NULL";
-	total_cost = 0.0;
+	
 }
 vehicle::vehicle(string &id_m,string &company_m,string &data_m,string &model_m,string &type_m){
 	ID = id_m;

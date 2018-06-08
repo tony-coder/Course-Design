@@ -1,2 +1,9 @@
-﻿  menu.cpp
-  Course Design.vcxproj -> C:\Users\admin\source\repos\Course Design\Debug\Course Design.exe
+﻿  Bus.cpp
+  Car.cpp
+  main.cpp
+  management.cpp
+  menu.cpp
+  truck.cpp
+  vehicle.cpp
+  正在生成代码...
+  Course Design.vcxproj -> F:\新建文件夹\Course Design\Debug\Course Design.exe
